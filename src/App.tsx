@@ -1,39 +1,61 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import './App.css';
+import Counter from "./components/counter/Counter";
+import Settings from "./components/settings/Settings";
 
 function App() {
 
-    const [counter, setCounter] = useState<number>(0)
+
+    const [inputMaxValue, setInputMaxValue] = useState<number>(5)
+    const [inputMinValue, setInputMinValue] = useState<number>(2)
+    const [counterValue, setCounterValue] = useState<number>(inputMinValue)
     //const [disable, setDisable] = useState<boolean>(false)
 
-    let isDisableIncr: boolean = false;
-    let isDisableSet: boolean = false;
 
     const increaseCounter = () => {
-        setCounter(counter + 1)
+        setCounterValue(counterValue + 1)
     }
 
     const resetCounter = () => {
-        setCounter(0)
+        setCounterValue(inputMinValue)
     }
 
-    if (counter === 5) {
-        isDisableIncr = !isDisableIncr
+
+    const setLocalStorageValue = (counter: number) => {
+        localStorage.setItem("counterValue", JSON.stringify(counter))
     }
 
-    if (counter === 0) {
-        isDisableSet = !isDisableSet
+    const getLocalStorageValue = () => {
+        let stringValue = localStorage.getItem("counterValue");
+        if (stringValue) {
+            setCounterValue(JSON.parse(stringValue))
+        }
     }
 
-    const isMaxValueClass = counter === 5 ? "maxValue" : ""
+    useEffect(() => {
+        getLocalStorageValue()
+    }, [])
+
+
+    useEffect(() => {
+        setLocalStorageValue(counterValue)
+    }, [counterValue])
+
+    const buttons = [{name: "incr", callback: increaseCounter}, {name: "reset", callback: resetCounter},]
+
 
     return (
         <div className="App">
-            <div className={`display ${isMaxValueClass}`}>{counter}</div>
-            <div className="buttons">
-                <button onClick={increaseCounter} disabled={isDisableIncr}>incr</button>
-                <button onClick={resetCounter} disabled={isDisableSet}>reset</button>
-            </div>
+            <Counter counter={counterValue}
+                     buttons={buttons}
+                     inputMaxValue={inputMaxValue}
+                     inputMinValue={inputMinValue}/>
+            <Settings
+                counterValue={counterValue}
+                inputMaxValue={inputMaxValue}
+                setInputMaxValue={setInputMaxValue}
+                inputMinValue={inputMinValue}
+                setInputMinValue={setInputMinValue}/>
         </div>
     );
 }

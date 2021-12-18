@@ -1,4 +1,5 @@
-.App {
+.Settings,
+.Counter {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -7,14 +8,18 @@
   max-width: 200px;
   border: 1px aqua solid;
   margin: 50px auto;
+  padding: 10px;
 }
 
 .display {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   width: 100%;
+  min-height: 100px;
   margin-bottom: 20px;
+  border: solid 1px aqua;
 }
 
 .buttons {
@@ -37,4 +42,5 @@
 .maxValue {
   color: red;
 }
+
 
