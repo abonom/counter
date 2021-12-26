@@ -1,5 +1,6 @@
 import React, {ChangeEvent} from 'react';
 import Button from "../button/Button";
+import {statusMessageTextType} from "../../App";
 
 type SettingsPropsType = {
     counterValue: number
@@ -7,24 +8,41 @@ type SettingsPropsType = {
     inputMaxValue: number
     setInputMaxValue: (value: number) => void
     setInputMinValue: (value: number) => void
-
+    setCounterActive: (value: boolean) => void
+    counterActive: boolean
+    setCounterValue: (value: number) => void
+    resetCounter: () => void
+    statusMessage: statusMessageTextType
+    setStatusMessage: (status:statusMessageTextType) => void
 }
 
 const Settings = (props: SettingsPropsType) => {
 
 
+
     const onMaxValueChange = (e: ChangeEvent<HTMLInputElement>) => {
         props.setInputMaxValue(+e.currentTarget.value)
-
+        props.setCounterActive(false)
     }
 
     const onMinValueChange = (e: ChangeEvent<HTMLInputElement>) => {
         props.setInputMinValue(+e.currentTarget.value)
+        props.setCounterActive(false)
     }
 
-    const setInputValues = () => {
-
+    const onSetButtonClick = () => {
+        props.setCounterActive(true)
+        props.resetCounter()
     }
+
+    if (props.inputMinValue >= props.inputMaxValue) {
+        props.setStatusMessage("incorrect values")
+    }
+    else {
+        props.setStatusMessage("set values")
+    }
+
+
 
     return (
         <div className="Settings">
@@ -47,9 +65,11 @@ const Settings = (props: SettingsPropsType) => {
                             <Button
                                 name={"set"}
                                 counterValue={props.counterValue}
-                                //callback={callback}
+                                callback={onSetButtonClick}
                                 minValue={props.inputMinValue}
                                 maxValue={props.inputMaxValue}
+                                counterActive={props.counterActive}
+                                statusMessage={props.statusMessage}
                             />
 
             </div>

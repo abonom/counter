@@ -3,13 +3,25 @@ import './App.css';
 import Counter from "./components/counter/Counter";
 import Settings from "./components/settings/Settings";
 
+export type statusMessageTextType = "set values" | "incorrect values"
+
 function App() {
-
-
     const [inputMaxValue, setInputMaxValue] = useState<number>(5)
     const [inputMinValue, setInputMinValue] = useState<number>(2)
     const [counterValue, setCounterValue] = useState<number>(inputMinValue)
+    const [counterActive, setCounterActive] = useState<boolean>(true)
+    const [statusMessage, setStatusMessage] = useState<statusMessageTextType>("set values")
     //const [disable, setDisable] = useState<boolean>(false)
+
+    // let isButtonSetDisable;
+    //
+    // if (counterActive) {
+    //     isButtonSetDisable = true
+    // }
+    // if (counterActive === false) {
+    //     isButtonSetDisable = false
+    // }
+
 
 
     const increaseCounter = () => {
@@ -41,7 +53,7 @@ function App() {
         setLocalStorageValue(counterValue)
     }, [counterValue])
 
-    const buttons = [{name: "incr", callback: increaseCounter}, {name: "reset", callback: resetCounter},]
+    const buttons = [{name: "incr", callback: increaseCounter}, {name: "reset", callback: resetCounter}]
 
 
     return (
@@ -49,13 +61,23 @@ function App() {
             <Counter counter={counterValue}
                      buttons={buttons}
                      inputMaxValue={inputMaxValue}
-                     inputMinValue={inputMinValue}/>
+                     inputMinValue={inputMinValue}
+                     counterActive={counterActive}
+                     statusMessage={statusMessage}
+            />
             <Settings
                 counterValue={counterValue}
                 inputMaxValue={inputMaxValue}
                 setInputMaxValue={setInputMaxValue}
                 inputMinValue={inputMinValue}
-                setInputMinValue={setInputMinValue}/>
+                setInputMinValue={setInputMinValue}
+                setCounterActive={setCounterActive}
+                counterActive={counterActive}
+                setCounterValue={setCounterValue}
+                resetCounter={resetCounter}
+                statusMessage={statusMessage}
+                setStatusMessage={setStatusMessage}
+            />
         </div>
     );
 }
